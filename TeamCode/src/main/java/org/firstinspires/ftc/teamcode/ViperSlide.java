@@ -12,6 +12,8 @@ public class ViperSlide extends LinearOpMode {
     final int REVOLUTION_FOR_NEXT_LEVEL = 10;
     final float BASE_REVOLUTION_EXTRA_HEIGHT = 5;
 
+    //Variables ^
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
