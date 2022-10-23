@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
 public class ViperSlide extends LinearOpMode {
@@ -28,10 +29,6 @@ public class ViperSlide extends LinearOpMode {
         double speed;
 
         int level=1;
-        int ONE_TWO = 10;
-        int TWO_THREE = 10;
-        int THREE_FOUR = 10;
-
         int totalRevolutions=0;
 
         //find out which button is being pressed then pass in the
@@ -44,15 +41,19 @@ public class ViperSlide extends LinearOpMode {
 
             if (gamepad1.x == true){
                 totalRevolutions = changeLevel(level, 1);
+                linearSlide.setDirection(DcMotor.Direction.REVERSE);
             }
             else if(gamepad1.y == true) {
                 totalRevolutions = changeLevel(level, 2);
+                linearSlide.setDirection(DcMotor.Direction.REVERSE);
             }
             else if(gamepad1.b == true){
                 totalRevolutions = changeLevel(level, 3);
+                linearSlide.setDirection(DcMotor.Direction.REVERSE);
             }
             else if(gamepad1.a == true){
                 totalRevolutions = changeLevel(level, 4);
+                linearSlide.setDirection(DcMotor.Direction.REVERSE);
             }
 
         }

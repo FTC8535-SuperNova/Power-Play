@@ -3,11 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-public class ViperSlideExperiment {
-
-    @TeleOp
-    public class ViperSlide extends LinearOpMode {
+@TeleOp
+    public class ViperSlideExperiment extends LinearOpMode {
 
         // Declare Motors
         private DcMotor linearSlide = null;
@@ -40,14 +39,16 @@ public class ViperSlideExperiment {
             waitForStart();
 
             while(opModeIsActive()){
+                linearSlide.setDirection(DcMotor.Direction.REVERSE);
                 int linearSlideTarget = 0;
 
-                linearSlideTarget = linearSlide.getCurrentPosition() + (int)(pulses);
-                linearSlide.setTargetPosition(385);
+                if (gamepad1.a) {
+                    linearSlideTarget = linearSlide.getCurrentPosition() + (int)(pulses * 5);
+                    linearSlide.setTargetPosition(385);
 
-                linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+                    linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    linearSlide.setPower(0.5);
+                }
             }
         }
     }
-}
