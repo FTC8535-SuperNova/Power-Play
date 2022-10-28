@@ -10,8 +10,17 @@ public class ViperSlide extends LinearOpMode {
 
     // Declare Motors
     private DcMotor linearSlide = null;
-    final int REVOLUTION_FOR_NEXT_LEVEL = 10;
-    final float BASE_REVOLUTION_EXTRA_HEIGHT = 5;
+
+    int level=1;
+    double INCHES_OF_LINEAR_SLIDE = 38.4;
+    double TOTAL_REVOLUTIONS = 8.7;
+    double COUNTS_PER_REVOLUTION = 384.5;
+    double TOTAL_COUNTS_FOR_SLIDE= TOTAL_REVOLUTIONS/COUNTS_PER_REVOLUTION;
+    double COUNTS_PER_INCH = TOTAL_COUNTS_FOR_SLIDE/INCHES_OF_LINEAR_SLIDE;
+
+    double targetCounts;
+    final double COUNTS_FOR_NEXT_LEVEL = 10.0 * COUNTS_PER_INCH;
+    final double BASE_REVOLUTION_EXTRA_HEIGHT = 3.3 * COUNTS_PER_INCH;
 
     //Variables ^
 
@@ -28,8 +37,6 @@ public class ViperSlide extends LinearOpMode {
                 linearSlide.getCurrentPosition());
         double speed;
 
-        int level=1;
-        int totalRevolutions=0;
 
         //find out which button is being pressed then pass in the
 
@@ -40,19 +47,19 @@ public class ViperSlide extends LinearOpMode {
         while(opModeIsActive()){
 
             if (gamepad1.x == true){
-                totalRevolutions = changeLevel(level, 1);
+                targetCounts = changeLevel(level, 1);
                 linearSlide.setDirection(DcMotor.Direction.REVERSE);
             }
             else if(gamepad1.y == true) {
-                totalRevolutions = changeLevel(level, 2);
+                targetCounts = changeLevel(level, 2);
                 linearSlide.setDirection(DcMotor.Direction.REVERSE);
             }
             else if(gamepad1.b == true){
-                totalRevolutions = changeLevel(level, 3);
+                targetCounts = changeLevel(level, 3);
                 linearSlide.setDirection(DcMotor.Direction.REVERSE);
             }
             else if(gamepad1.a == true){
-                totalRevolutions = changeLevel(level, 4);
+                targetCounts = changeLevel(level, 4);
                 linearSlide.setDirection(DcMotor.Direction.REVERSE);
             }
 
@@ -63,28 +70,28 @@ public class ViperSlide extends LinearOpMode {
         //level diff is the newlevel minus the original level
         int levelDiff = newLevel - currentLevel;
 
-        int totalRevolutions = 0;
+        int totalCounts = 0;
 
         //calculate how many revolutions ndd in FORWARD direction to goto next level
         if (levelDiff > 0) {
             while (levelDiff > 0) {
                 linearSlide.setDirection(DcMotor.Direction.FORWARD);
-                totalRevolutions += REVOLUTION_FOR_NEXT_LEVEL;
+                totalCounts += COUNTS_FOR_NEXT_LEVEL;
                 levelDiff--;
             }
             if (currentLevel == 1) {
-                totalRevolutions += BASE_REVOLUTION_EXTRA_HEIGHT;
+                totalCounts += BASE_REVOLUTION_EXTRA_HEIGHT;
             }
         } else if (levelDiff < 0) {
             while (levelDiff < 0) {
                 linearSlide.setDirection(DcMotor.Direction.REVERSE);
-                totalRevolutions += REVOLUTION_FOR_NEXT_LEVEL;
+                totalCounts += COUNTS_FOR_NEXT_LEVEL;
                 levelDiff++;
             }
             if (currentLevel == 2) {
-                totalRevolutions += BASE_REVOLUTION_EXTRA_HEIGHT;
+                totalCounts += BASE_REVOLUTION_EXTRA_HEIGHT;
             }
         }
-        return totalRevolutions;
+        return totalCounts;
     }
         }

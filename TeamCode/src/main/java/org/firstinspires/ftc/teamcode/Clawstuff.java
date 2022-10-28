@@ -13,8 +13,14 @@ public class Clawstuff extends LinearOpMode {
     private DcMotor topRightMotor = null;
     public Servo claw = null;
 
+    void pwmEnable() {
+    }
+
     @Override
     public void runOpMode() throws InterruptedException {
+        double MIN_POSITION = 0.0;
+        double MAX_POSITION = 1.0;
+
         telemetry.addData("Status", "Init");
         telemetry.update();
 
@@ -26,12 +32,18 @@ public class Clawstuff extends LinearOpMode {
 
         waitForStart();
 
+        double position = 0.0;
+
         while (opModeIsActive()) {
+            claw.setPosition(position);
+
             if (gamepad1.b) {
-                claw.setPosition(0.30);
+                position += 0.1;
+                claw.setPosition(position);
 
             } else if (gamepad1.a) {
-                claw.setPosition(0.80);
+                position -= 0.1;
+                claw.setPosition(position);
 
                 telemetry.addData("Up", gamepad1.dpad_up);
                 telemetry.addData("Down", gamepad1.dpad_down);

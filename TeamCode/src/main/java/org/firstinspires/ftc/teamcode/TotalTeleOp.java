@@ -54,22 +54,22 @@ public class TotalTeleOp extends LinearOpMode {
                 sleep(2000);
             }
 
-            if (gamepad1.x == true){
-                totalRevolutions = changeLevel(level, 1);
-                linearSlide.setDirection(DcMotor.Direction.REVERSE);
-            }
-            else if(gamepad1.y == true) {
-                totalRevolutions = changeLevel(level, 2);
-                linearSlide.setDirection(DcMotor.Direction.REVERSE);
-            }
-            else if(gamepad1.b == true){
-                totalRevolutions = changeLevel(level, 3);
-                linearSlide.setDirection(DcMotor.Direction.REVERSE);
-            }
-            else if(gamepad1.a == true){
-                totalRevolutions = changeLevel(level, 4);
-                linearSlide.setDirection(DcMotor.Direction.REVERSE);
-            }
+//            if (gamepad1.x == true){
+//                totalRevolutions = changeLevel(level, 1);
+//                linearSlide.setDirection(DcMotor.Direction.REVERSE);
+//            }
+//            else if(gamepad1.y == true) {
+//                totalRevolutions = changeLevel(level, 2);
+//                linearSlide.setDirection(DcMotor.Direction.REVERSE);
+//            }
+//            else if(gamepad1.b == true){
+//                totalRevolutions = changeLevel(level, 3);
+//                linearSlide.setDirection(DcMotor.Direction.REVERSE);
+//            }
+//            else if(gamepad1.a == true){
+//                totalRevolutions = changeLevel(level, 4);
+//                linearSlide.setDirection(DcMotor.Direction.REVERSE);
+//            }
 
             if (gamepad1.a == true) {
                 bottomLeftMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -128,11 +128,22 @@ public class TotalTeleOp extends LinearOpMode {
             double leftPower = -gamepad1.left_stick_y;
             double rightPower = -gamepad1.right_stick_y;
 
+            if (gamepad2.a == true){
+
+            } else{
+                double slide = gamepad2.left_stick_y;
+
+                linearSlide.setDirection(DcMotor.Direction.FORWARD);
+                linearSlide.setPower(slide);
+            }
+            double slide = gamepad2.left_stick_y;
+
 
             telemetry.addData("bottomLeftMotor", "Forward/Backwards Power (%.2f)", leftPower);
             telemetry.addData("topLeftMotor", "Forward/Backwards Power (%.2f)", leftPower);
             telemetry.addData("bottomRightMotor", "Forward/Backwards Power (%.2f)", rightPower);
             telemetry.addData("topRightMotor", "Forward/Backwards Power (%.2f)", rightPower);
+            telemetry.addData("linearSlide", "Forward/Backwards Power (%.2f)", slide);
 
             telemetry.addData("mecanumSpeed", speed);
 
