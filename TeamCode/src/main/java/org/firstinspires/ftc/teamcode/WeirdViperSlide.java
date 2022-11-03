@@ -105,8 +105,6 @@ public class WeirdViperSlide extends LinearOpMode {
             double slide = gamepad1.left_stick_y;
 
 
-
-
             telemetry.addData("slide", slide);
 
             telemetry.addData("Up", gamepad1.y);

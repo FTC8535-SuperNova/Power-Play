@@ -32,7 +32,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
             int totalRevolutions=0;
 
-            //find out which button is being pressed then pass in the
+            //find out which button is being pressed
 
 
 

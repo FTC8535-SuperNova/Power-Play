@@ -22,7 +22,7 @@ public class ViperSlide extends LinearOpMode {
     final double COUNTS_FOR_NEXT_LEVEL = 10.0 * COUNTS_PER_INCH;
     final double BASE_REVOLUTION_EXTRA_HEIGHT = 3.3 * COUNTS_PER_INCH;
 
-    //Variables ^
+    //Variables above ^
 
     @Override
     public void runOpMode() throws InterruptedException {
