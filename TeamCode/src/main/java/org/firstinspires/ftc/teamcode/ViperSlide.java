@@ -11,11 +11,12 @@ public class ViperSlide extends LinearOpMode {
     // Declare Motors
     private DcMotor linearSlide = null;
 
+
     int level=1;
     double INCHES_OF_LINEAR_SLIDE = 38.4;
     double TOTAL_REVOLUTIONS = 8.7;
     double COUNTS_PER_REVOLUTION = 384.5;
-    double TOTAL_COUNTS_FOR_SLIDE= TOTAL_REVOLUTIONS/COUNTS_PER_REVOLUTION;
+    double TOTAL_COUNTS_FOR_SLIDE= TOTAL_REVOLUTIONS*COUNTS_PER_REVOLUTION;
     double COUNTS_PER_INCH = TOTAL_COUNTS_FOR_SLIDE/INCHES_OF_LINEAR_SLIDE;
 
     double targetCounts;
@@ -45,14 +46,19 @@ public class ViperSlide extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()){
+//            telemetry.addData("Up", gamepad1.y);
+//            telemetry.addData("Down", gamepad1.a);
+//            telemetry.addData("Left", gamepad1.x);
+//            telemetry.addData("Right", gamepad1.b);
+//            telemetry.update();
 
             if (gamepad1.x == true){
                 targetCounts = changeLevel(level, 1);
-                linearSlide.setDirection(DcMotor.Direction.REVERSE);
+                linearSlide.setDirection(DcMotor.Direction.FORWARD);
             }
             else if(gamepad1.y == true) {
                 targetCounts = changeLevel(level, 2);
-                linearSlide.setDirection(DcMotor.Direction.REVERSE);
+                linearSlide.setDirection(DcMotor.Direction.FORWARD);
             }
             else if(gamepad1.b == true){
                 targetCounts = changeLevel(level, 3);
@@ -62,7 +68,6 @@ public class ViperSlide extends LinearOpMode {
                 targetCounts = changeLevel(level, 4);
                 linearSlide.setDirection(DcMotor.Direction.REVERSE);
             }
-
         }
     }
 
@@ -75,22 +80,38 @@ public class ViperSlide extends LinearOpMode {
         //calculate how many revolutions ndd in FORWARD direction to goto next level
         if (levelDiff > 0) {
             while (levelDiff > 0) {
-                linearSlide.setDirection(DcMotor.Direction.FORWARD);
-                totalCounts += COUNTS_FOR_NEXT_LEVEL;
-                levelDiff--;
-            }
-            if (currentLevel == 1) {
-                totalCounts += BASE_REVOLUTION_EXTRA_HEIGHT;
-            }
-        } else if (levelDiff < 0) {
-            while (levelDiff < 0) {
+                if (currentLevel == 1) {
+                    totalCounts += BASE_REVOLUTION_EXTRA_HEIGHT;
+                }
                 linearSlide.setDirection(DcMotor.Direction.REVERSE);
                 totalCounts += COUNTS_FOR_NEXT_LEVEL;
+                linearSlide.setTargetPosition(totalCounts);
+                linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                linearSlide.setPower(0.3);
+
+                while(linearSlide.isBusy()){
+                }
+                levelDiff--;
+
+            }
+
+        } else if (levelDiff < 0) {
+            while (levelDiff < 0) {
+                if (currentLevel == 2) {
+                    totalCounts += BASE_REVOLUTION_EXTRA_HEIGHT;
+                }
+                linearSlide.setDirection(DcMotor.Direction.FORWARD);
+                totalCounts += COUNTS_FOR_NEXT_LEVEL;
+                linearSlide.setTargetPosition(totalCounts);
+                linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                linearSlide.setPower(0.3);
+                while(linearSlide.isBusy()){
+                }
                 levelDiff++;
+
+
             }
-            if (currentLevel == 2) {
-                totalCounts += BASE_REVOLUTION_EXTRA_HEIGHT;
-            }
+
         }
         return totalCounts;
     }
