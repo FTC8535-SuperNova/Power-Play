@@ -34,8 +34,9 @@ public class ViperSlide extends LinearOpMode {
         linearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         linearSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        telemetry.addData("Starting at",  "%7",
-                linearSlide.getCurrentPosition());
+//        telemetry.addData("Starting at",  "%7",
+//                linearSlide.getCurrentPosition());
+//        telemetry.update();
         double speed;
 
 
@@ -46,11 +47,6 @@ public class ViperSlide extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()){
-//            telemetry.addData("Up", gamepad1.y);
-//            telemetry.addData("Down", gamepad1.a);
-//            telemetry.addData("Left", gamepad1.x);
-//            telemetry.addData("Right", gamepad1.b);
-//            telemetry.update();
 
             if (gamepad1.x == true){
                 targetCounts = changeLevel(level, 1);
@@ -68,6 +64,14 @@ public class ViperSlide extends LinearOpMode {
                 targetCounts = changeLevel(level, 4);
                 linearSlide.setDirection(DcMotor.Direction.REVERSE);
             }
+
+            telemetry.addData("Up", gamepad1.y);
+
+            telemetry.addData("Up", gamepad1.y);
+            telemetry.addData("Down", gamepad1.a);
+            telemetry.addData("Left", gamepad1.x);
+            telemetry.addData("Right", gamepad1.b);
+            telemetry.update();
         }
     }
 
