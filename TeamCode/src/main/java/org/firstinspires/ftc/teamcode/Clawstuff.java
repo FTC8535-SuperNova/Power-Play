@@ -36,7 +36,6 @@ public class Clawstuff extends LinearOpMode {
             if(gamepad1.right_bumper == true && gamepad1.y){
                 speed = speed+SPEED_INCREMENT;
                 sleep(2000); //To avoid the variable speed from increasing more than 0.1 each time the button is pressed
-
             }
             else if(gamepad1.right_bumper == true && gamepad1.a){
                 speed = speed-SPEED_INCREMENT;

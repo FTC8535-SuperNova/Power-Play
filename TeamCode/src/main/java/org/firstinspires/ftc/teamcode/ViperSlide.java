@@ -47,7 +47,6 @@ public class ViperSlide extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()){
-
             if (gamepad1.x == true){
                 targetCounts = changeLevel(level, 1);
                 linearSlide.setDirection(DcMotor.Direction.FORWARD);
