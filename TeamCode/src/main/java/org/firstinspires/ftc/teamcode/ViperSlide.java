@@ -75,7 +75,7 @@ public class ViperSlide extends LinearOpMode {
         }
     }
 
-    private int changeLevel(int currentLevel, int newLevel) {
+    public int changeLevel(int currentLevel, int newLevel) {
         //level diff is the newlevel minus the original level
         int levelDiff = newLevel - currentLevel;
 

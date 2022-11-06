@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
@@ -11,16 +12,11 @@ public class Clawstuff extends LinearOpMode {
     private DcMotor topLeftMotor = null;
     private DcMotor bottomRightMotor = null;
     private DcMotor topRightMotor = null;
-    public Servo claw = null;
-
-    void pwmEnable() {
-    }
+    private DcMotor linearSlide = null;
+    public Servo Claw = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        double MIN_POSITION = 0.0;
-        double MAX_POSITION = 1.0;
-
         telemetry.addData("Status", "Init");
         telemetry.update();
 
@@ -28,32 +24,119 @@ public class Clawstuff extends LinearOpMode {
         topLeftMotor = hardwareMap.get(DcMotor.class, "topLeftMotor");
         bottomRightMotor = hardwareMap.get(DcMotor.class, "bottomRightMotor");
         topRightMotor = hardwareMap.get(DcMotor.class, "topRightMotor");
-        claw = hardwareMap.get(Servo.class, "claw");
+        linearSlide = hardwareMap.get(DcMotor.class, "linearSlide");
+        Claw = hardwareMap.get(Servo.class, "Claw");
 
         waitForStart();
 
-        double position = 0.0;
-
         while (opModeIsActive()) {
-            claw.setPosition(position);
+            double speed = 0.5;
+            double SPEED_INCREMENT = 0.1;
 
-            if (gamepad1.b) {
-                position += 0.1;
-                claw.setPosition(position);
+            if(gamepad1.right_bumper == true && gamepad1.y){
+                speed = speed+SPEED_INCREMENT;
+                sleep(2000); //To avoid the variable speed from increasing more than 0.1 each time the button is pressed
 
-            } else if (gamepad1.a) {
-                position -= 0.1;
-                claw.setPosition(position);
+            }
+            else if(gamepad1.right_bumper == true && gamepad1.a){
+                speed = speed-SPEED_INCREMENT;
+                sleep(2000);
+            }
 
-                telemetry.addData("Up", gamepad1.dpad_up);
-                telemetry.addData("Down", gamepad1.dpad_down);
-                telemetry.addData("Left", gamepad1.dpad_left);
-                telemetry.addData("Right", gamepad1.dpad_right);
-                telemetry.addData("Close", gamepad1.a);
-                telemetry.addData("Open", gamepad1.b);
-                telemetry.update();
+            if (gamepad1.a == true){
+                bottomLeftMotor.setDirection(DcMotor.Direction.FORWARD);
+                topLeftMotor.setDirection(DcMotor.Direction.FORWARD);
+                bottomRightMotor.setDirection(DcMotor.Direction.REVERSE);
+                topRightMotor.setDirection(DcMotor.Direction.REVERSE);
+
+                bottomLeftMotor.setPower(speed);
+                topLeftMotor.setPower(speed);
+                bottomRightMotor.setPower(speed);
+                topRightMotor.setPower(speed);
+            }
+            else if (gamepad1.y == true){
+                bottomLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+                topLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+                bottomRightMotor.setDirection(DcMotor.Direction.FORWARD);
+                topRightMotor.setDirection(DcMotor.Direction.FORWARD);
+
+                bottomLeftMotor.setPower(speed);
+                topLeftMotor.setPower(speed);
+                bottomRightMotor.setPower(speed);
+                topRightMotor.setPower(speed);
+            }
+            else if (gamepad1.b == true){
+                bottomLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+                topLeftMotor.setDirection(DcMotor.Direction.FORWARD);
+                bottomRightMotor.setDirection(DcMotor.Direction.FORWARD);
+                topRightMotor.setDirection(DcMotor.Direction.REVERSE);
+
+                bottomLeftMotor.setPower(speed);
+                topLeftMotor.setPower(speed);
+                bottomRightMotor.setPower(speed);
+                topRightMotor.setPower(speed);
+            }
+            else if (gamepad1.x == true){
+                bottomLeftMotor.setDirection(DcMotor.Direction.FORWARD);
+                topLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+                bottomRightMotor.setDirection(DcMotor.Direction.REVERSE);
+                topRightMotor.setDirection(DcMotor.Direction.FORWARD);
+
+                bottomLeftMotor.setPower(speed);
+                topLeftMotor.setPower(speed);
+                bottomRightMotor.setPower(speed);
+                topRightMotor.setPower(speed);
+            }
+            else{
+                double leftPower = -gamepad1.left_stick_y;
+                double rightPower = -gamepad1.right_stick_y;
+
+                bottomLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+                topLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+                bottomRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+                topRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+                bottomLeftMotor.setPower(leftPower);
+                topLeftMotor.setPower(leftPower);
+                bottomRightMotor.setPower(rightPower);
+                topRightMotor.setPower(rightPower);
+            }
+            double leftPower = -gamepad1.left_stick_y;
+            double rightPower = -gamepad1.right_stick_y;
+
+            double slide = gamepad2.left_stick_y;
+
+            linearSlide.setDirection(DcMotor.Direction.FORWARD);
+            linearSlide.setPower(slide);
+
+            if (gamepad2.x) {
+                Claw.setPosition(0.30);                // Close Claw, goes inward
+            }
+            else if (gamepad2.y) {
+                Claw.setPosition(0.40);
+            }
+            else if (gamepad2.b) {
+                Claw.setPosition(0.50); // Opens Claw, goes outward
+            }
+
+            telemetry.addData("bottomLeftMotor", "Forward/Backwards Power (%.2f)", leftPower);
+            telemetry.addData("topLeftMotor", "Forward/Backwards Power (%.2f)", leftPower);
+            telemetry.addData("bottomRightMotor", "Forward/Backwards Power (%.2f)", rightPower);
+            telemetry.addData("topRightMotor", "Forward/Backwards Power (%.2f)", rightPower);
+
+            telemetry.addData("mecanumSpeed", speed);
+            telemetry.addData("slide", slide);
+
+            telemetry.addData("Up", gamepad1.y);
+            telemetry.addData("Down", gamepad1.a);
+            telemetry.addData("Left", gamepad1.x);
+            telemetry.addData("Right", gamepad1.b);
+
+            telemetry.addData("Close", gamepad2.x);
+            telemetry.addData("Mid", gamepad2.y);
+            telemetry.addData("Open", gamepad1.b);
+            telemetry.update();
             }
 
         }
     }
-}
