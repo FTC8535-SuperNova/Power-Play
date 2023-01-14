@@ -30,84 +30,15 @@ public class TotalTeleOp extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-//            double speed = 0.5;
-//            double SPEED_INCREMENT = 0.1;
-//
-//            if(gamepad1.right_bumper == true && gamepad1.y){
-//                speed = speed+SPEED_INCREMENT;
-//                sleep(2000); //To avoid the variable speed from increasing more than 0.1 each time the button is pressed
-//
-//            }
-//            else if(gamepad1.right_bumper == true && gamepad1.a){
-//                speed = speed-SPEED_INCREMENT;
-//                sleep(2000);
-//            }
-//
-//            if (gamepad1.a == true){
-//                bottomLeftMotor.setDirection(DcMotor.Direction.FORWARD);
-//                topLeftMotor.setDirection(DcMotor.Direction.FORWARD);
-//                bottomRightMotor.setDirection(DcMotor.Direction.REVERSE);
-//                topRightMotor.setDirection(DcMotor.Direction.REVERSE);
-//
-//                bottomLeftMotor.setPower(speed);
-//                topLeftMotor.setPower(speed);
-//                bottomRightMotor.setPower(speed);
-//                topRightMotor.setPower(speed);
-//            }
-//            else if (gamepad1.y == true){
-//                bottomLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-//                topLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-//                bottomRightMotor.setDirection(DcMotor.Direction.FORWARD);
-//                topRightMotor.setDirection(DcMotor.Direction.FORWARD);
-//
-//                bottomLeftMotor.setPower(speed);
-//                topLeftMotor.setPower(speed);
-//                bottomRightMotor.setPower(speed);
-//                topRightMotor.setPower(speed);
-//            }
-//            else if (gamepad1.b == true){
-//                bottomLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-//                topLeftMotor.setDirection(DcMotor.Direction.FORWARD);
-//                bottomRightMotor.setDirection(DcMotor.Direction.FORWARD);
-//                topRightMotor.setDirection(DcMotor.Direction.REVERSE);
-//
-//                bottomLeftMotor.setPower(speed);
-//                topLeftMotor.setPower(speed);
-//                bottomRightMotor.setPower(speed);
-//                topRightMotor.setPower(speed);
-//            }
-//            else if (gamepad1.x == true){
-//                bottomLeftMotor.setDirection(DcMotor.Direction.FORWARD);
-//                topLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-//                bottomRightMotor.setDirection(DcMotor.Direction.REVERSE);
-//                topRightMotor.setDirection(DcMotor.Direction.FORWARD);
-//
-//                bottomLeftMotor.setPower(speed);
-//                topLeftMotor.setPower(speed);
-//                bottomRightMotor.setPower(speed);
-//                topRightMotor.setPower(speed);
-//            }
-//            else{
-//                double leftPower = -gamepad1.left_stick_y;
-//                double rightPower = -gamepad1.right_stick_y;
-//
-//                bottomLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-//                topLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-//                bottomRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-//                topRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-//
-//                bottomLeftMotor.setPower(leftPower);
-//                topLeftMotor.setPower(leftPower);
-//                bottomRightMotor.setPower(rightPower);
-//                topRightMotor.setPower(rightPower);
-//            }
+            double speed = 0.5;
+            double SPEED_INCREMENT = 0.1;
 
             bottomLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
             topLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
             bottomRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
             topRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-            double y = gamepad1.left_stick_y; // Remember, this is reversed!
+            double y = -gamepad1.left_stick_y; // Remember, this is reversed!
             double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double rx = gamepad1.right_stick_x;
 
@@ -132,13 +63,13 @@ public class TotalTeleOp extends LinearOpMode {
             linearSlide.setPower(slide);
 
             if (gamepad2.x) {
-                Claw.setPosition(0.30);                // Close Claw, goes inward
+                Claw.setPosition(-0.30);                // Close Claw, goes outward
             }
             else if (gamepad2.y) {
-                Claw.setPosition(0.40);
+                Claw.setPosition(0.30);        // neutral
             }
             else if (gamepad2.b) {
-                Claw.setPosition(0.50); // Opens Claw, goes outward
+                Claw.setPosition(0.70); // Opens Claw, goes inward
             }
 
             telemetry.addData("slide", slide);
@@ -146,6 +77,7 @@ public class TotalTeleOp extends LinearOpMode {
             telemetry.addData("Close", gamepad2.x);
             telemetry.addData("Mid", gamepad2.y);
             telemetry.addData("Open", gamepad1.b);
+            telemetry.addData("Open", Claw.getPosition());
             telemetry.update();
         }
 
